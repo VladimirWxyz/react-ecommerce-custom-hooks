@@ -2,15 +2,25 @@ import { useState } from "react";
 
 export function useFiltros() {
 
-    const [filtros, setFiltros]= useState({
-        categoria: 'todas',
+    const [filtros, cambiarFiltros]= useState({
+        categoria: 'all',
         precioMinimo: 0
     });
 
-    const cambiarFiltros = (nuevosFiltros) => setFiltros({...filtros, ...nuevosFiltros});
+    const filtrarProductos = (productos) => {
+        return productos.filter(producto => {
+            return (
+                producto.precio >= filtros.precioMinimo && (
+                    filtros.categoria === 'all' ||
+                    producto.categoria === filtros.categoria
+                )
+            );
+        });
+    };
 
     return {
         filtros, 
-        cambiarFiltros
+        cambiarFiltros,
+        filtrarProductos
     };
 }
